@@ -1,8 +1,5 @@
-import sys
-sys.path.append("..")
-
-from BCPTFunctions import bcp_create_session
-from BCPTFunctions import bcp_get_unused_interfaces
+from BCPTools.BCPTFunctions import bcp_create_session
+from BCPTools.BCPTFunctions import bcp_get_unused_interfaces
 
 conn = {
     'device_type': 'cisco_ios',

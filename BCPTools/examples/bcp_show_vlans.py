@@ -1,12 +1,5 @@
-import sys
-sys.path.append("..")
-
-#DEV Imports (not installing the module with pip)
-from BCPTFunctions import bcp_create_session
-from BCPTFunctions import bcp_show_vlans
-
-#from BCPTools.BCPTFunctions import bcp_create_session
-#from BCPTools.BCPTFunctions import bcp_show_vlans
+from BCPTools.BCPTFunctions import bcp_create_session
+from BCPTools.BCPTFunctions import bcp_show_vlans
 
 import os
 from pprint import pprint

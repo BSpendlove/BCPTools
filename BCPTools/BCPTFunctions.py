@@ -27,13 +27,12 @@ import textfsm
 from pprint import pprint
 from datetime import datetime
 
-
 def bcp_create_session(session_details):
-    session = ConnectHandler(**session_details)
-    session.enable()
-    
-    return(session)
-    
+	session = ConnectHandler(**session_details)
+	session.enable()
+
+	return(session)
+
 def bcp_get_config(session, RemovePasswords=True):
 
     commandConfig = "show run"
@@ -42,7 +41,7 @@ def bcp_get_config(session, RemovePasswords=True):
 
         getRunningConfig = session.send_command(commandConfig)
         getHostname = session.find_prompt().replace('#','')
-        
+
     except ValueError as err:
         print("Error: {0}".format(err))
 

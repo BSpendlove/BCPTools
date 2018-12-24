@@ -1,8 +1,5 @@
-import sys
-sys.path.append("..")
-
-from BCPTFunctions import bcp_create_session
-from BCPTFunctions import bcp_get_cdp_neighbors
+from BCPTools.BCPTFunctions import bcp_create_session
+from BCPTools.BCPTFunctions import bcp_get_cdp_neighbors
 
 from pprint import pprint
 import os

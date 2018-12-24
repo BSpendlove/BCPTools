@@ -1,8 +1,5 @@
-import sys
-sys.path.append("..")
-
-from BCPTFunctions import bcp_create_session
-from BCPTFunctions import bcp_show_interfaces
+from BCPTools.BCPTFunctions import bcp_create_session
+from BCPTools.BCPTFunctions import bcp_show_interfaces
 
 from pprint import pprint
 import os

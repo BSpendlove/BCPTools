@@ -1,8 +1,5 @@
-import sys
-sys.path.append("..")
-
-from BCPTFunctions import bcp_create_session
-from BCPTFunctions import bcp_inventory_device_cisco
+from BCPTools.BCPTFunctions import bcp_create_session
+from BCPTools.BCPTFunctions import bcp_inventory_device_cisco
 
 from pprint import pprint
 
