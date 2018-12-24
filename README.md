@@ -12,6 +12,8 @@ The majority of functions returns some data in json type format. I've used a fun
 
 <i>session</i> - This is normally the SSH session you can pass into the function (I normally use the bcp_create_session to pass into my other functions)
 
+I also need to possibly arrange the below functions in alphabetical order... Not important right now since I keep adding to the list
+
 bcp_create_session(<i>session_details</i>)
 ------------------------------------------
 -Establishes SSH connection into global configuration mode using netmiko, you just need to pass the normal netmiko variables such as:
