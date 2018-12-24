@@ -1,0 +1,2 @@
+include BCPTools/textfsm_templates/*.template
+include BCPTools/examples/*.py
