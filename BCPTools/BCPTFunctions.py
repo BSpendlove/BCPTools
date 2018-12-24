@@ -14,7 +14,7 @@
 
     bcp_create_session is used to establish the SSH session by netmiko. Pass the netmiko connection details / dictionary into this if you want to use it...
 
-    List of functions that can be used are detailed more on the readme at: https://github.com/BSpendlove/BCPTools
+    List of functions that can be used are detailed more on the readme at: https://github.com/BSpendlove/BCP-Tools
 
 """
 
@@ -83,7 +83,6 @@ def bcp_get_cdp_neighbors(session):
     command = 'show cdp neighbors detail'
 
     cdpresults = session.send_command(command)
-    print(cdpresults)
     output = textfsm_extractor('cisco_ios_show_cdp_neighbors_detail.template', cdpresults)
 
     return output
@@ -114,9 +113,6 @@ def bcp_send_command(session, command):
 
     except OSError as err:
         print("Error: {0}".format(err))
-
-def bcp_get_vlans(session):
-    vlans = session.send_command('show vlan')
 
 def bcp_inventory_device_cisco(session, generatecsv=False, csvname="cisco_inventory.csv"):
 	version = session.send_command('show version')

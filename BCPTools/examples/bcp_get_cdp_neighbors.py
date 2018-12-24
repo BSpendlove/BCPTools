@@ -25,4 +25,4 @@ for device in devices:
 
     output = bcp_get_cdp_neighbors(session)
     for x in output:
-        pprint(x['destination_host'])
+        pprint(x)
