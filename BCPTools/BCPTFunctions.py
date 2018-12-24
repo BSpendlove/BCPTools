@@ -14,7 +14,7 @@
 
     bcp_create_session is used to establish the SSH session by netmiko. Pass the netmiko connection details / dictionary into this if you want to use it...
 
-    List of functions that can be used are detailed more on the readme at: https://github.com/BSpendlove/BCP-Tools
+    List of functions that can be used are detailed more on the readme at: https://github.com/BSpendlove/BCPTools
 
 """
 
