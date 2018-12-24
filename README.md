@@ -5,6 +5,21 @@ This is a personal project to learn python but also try to do something with pyt
 
 I try to provide examples with my functions and will even try to provide real world examples when I've used them, some might be totally useless but others may be of help for other network engineers. I'm no expert at python, although I hope this project helps other people with looking into what you can do with python and network configuration etc..
 
+## Installation
+1. Create a directory, change directory and run:
+```
+git clone https://github.com/BSpendlove/BCPTools
+```
+
+2. Change directory into 'BCPTools' and run:
+```
+pip3 install -r requirements.txt
+```
+and then finally:
+```
+pip3 install .
+```
+
 Functions
 =========
 
