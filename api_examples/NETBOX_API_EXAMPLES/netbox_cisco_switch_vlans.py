@@ -42,31 +42,33 @@ class bcp_vlan_functions(object):
 			return results
 
 	def create_vlan(self, netbox, name, vlanid, groupname):
-		vlan_check = netbox.ipam.get_vlans(name=name)
+		#vlan_check = netbox.ipam.get_vlans(name=name, group=groupname)
 		vlangroups = self.get_vlan_group(netbox, groupname)
 		site_id = self.get_vlan_group_site_id(netbox, groupname)
 
-		if not vlangroups:
+		if not vlangroups: #If the VLAN Group doesn't exist, then create the VLAN assign to NONE group
 			print("VLAN Group {0} could not be found...".format(groupname))
 			vlangroupid = None
-			results = netbox.ipam.create_vlan(vlan_name=name,vid=vlanid,group=vlangroupid,site_id=None)
+			results = netbox.ipam.create_vlan(vlan_name=name,vid=vlanid,group=vlangroupid,site=None)
 			return results
 
 		else:
-			vlangroupid = vlangroups[0]['id']
+			#If the VLAN Group does exist...
+			vlangroupid = vlangroups[0]['id'] #Returns the ID of the group we are trying to use
+			vlan_check = netbox.ipam.get_vlans(name=name,group_name=groupname)
 
-			if not vlan_check:
-				results = netbox.ipam.create_vlan(vlan_name=name,vid=vlanid,group=vlangroupid,site=site_id)
-				print("VLAN{0} ({1}) has been created...\n".format(vlanid, name))
-				return results
+			VLAN_EXIST = False
 
-			if name in vlan_check[0]['name']:
-				if site_id in vlan_check[0]['site']:
-					print("VLAN{0} exists in the Netbox Database and is already apart of VLAN Group {1}".format(vlanid, groupname))
-				else:
-					print("VLAN{0} exists in the Netbox database although there is no current VLAN belonging to the group {1}.. Configured for the VLAN Group {1}".format(name, groupname))
-					netbox.ipam.create_vlan(vlan_name=name,vid=vlanid,group=vlangroupid,site=site_id)
+			#Let's check if VLAN exist in the group...
+			for vlan in vlan_check:
+				if vlangroupid == vlan['group']['id']:
+					VLAN_EXIST = True
 
+			if VLAN_EXIST == True:
+				print("VLAN{0} already exist in group {1}".format(vlanid, groupname))
+			else:
+				print("VLAN Exist in database but isn't in the current group {0}... Creating VLAN now...".format(groupname))
+				return netbox.ipam.create_vlan(vlan_name=name,vid=vlanid,group=vlangroupid,site=site_id)
 
 	def get_vlan_group(self, netbox, vlanname):
 		#Try to use either id or name to filter through VLAN groups, obviously ID is better if you have duplicate vlan group names, but with some common practice, you shouldn't configure 2 sites with the same 'VLAN group name'!!!
