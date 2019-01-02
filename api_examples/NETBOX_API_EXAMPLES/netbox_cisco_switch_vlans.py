@@ -117,4 +117,4 @@ class bcp_vlan_functions(object):
 
 			return textfsm_data
 
-print(bcp_vlan_functions().save_vlans_to_netbox(api_login, "SITE A: VLAN Group"))
+print(bcp_vlan_functions().save_vlans_to_netbox(api_login, "SITE A: VLAN Group")) #Change to the NAME of the VLAN group you configured.. I should really set this to the slug of the VLAN group since more than 2 groups with same name could exist...
