@@ -1,7 +1,7 @@
+import textfsm
+from netmiko import ConnectHandler
 from pprint import pprint
 from netbox import NetBox
-from BCPTools.BCPTFunctions import bcp_create_session
-from BCPTools.BCPTFunctions import bcp_show_vlans
 
 #Cisco Switch connection details for Netmiko/BCPTools
 
@@ -67,7 +67,7 @@ class bcp_vlan_functions(object):
 			if VLAN_EXIST == True:
 				print("VLAN{0} already exist in group {1}".format(vlanid, groupname))
 			else:
-				print("VLAN Exist in database but isn't in the current group {0}... Creating VLAN now...".format(groupname))
+				print("VLAN{0} doesn't exist in the current group {1}... Creating VLAN now...".format(vlanid, groupname))
 				return netbox.ipam.create_vlan(vlan_name=name,vid=vlanid,group=vlangroupid,site=site_id)
 
 	def get_vlan_group(self, netbox, vlanname):
@@ -75,17 +75,46 @@ class bcp_vlan_functions(object):
 		return netbox.ipam.get_vlan_groups(name=vlanname)
 
 	def save_vlans_to_netbox(self, netbox, groupname):
-		session = bcp_create_session(conn)
-		vlans = bcp_show_vlans(session)
+		session = ConnectHandler(**conn)
+		session.enable()
+
+		vlans = self.bcp_show_vlans(session)
 
 		for vlan in vlans:
+			print("=" * 64)
 			self.create_vlan(netbox, vlan['name'], vlan['vlan_id'],groupname)
+			pprint(vlan)
+			print("\n")
 
 	def get_vlan_group_site_id(self, netbox, groupname):
 		vlan_group = netbox.ipam.get_vlan_groups(name=groupname)
-		return vlan_group[0]['site']['id']
+		if not vlan_group[0]['site']:
+			print("VLAN Group has no site configured...")
+			return None
+		else:
+			return vlan_group[0]['site']['id']
 
+	def bcp_show_vlans(self, session):
+		command = 'show vlan'
 
-#bcp_vlan_functions().create_vlan_group(api_login,"PYTHON-TEST-NETBOX","python-test-netbox")
-print(bcp_vlan_functions().save_vlans_to_netbox(api_login, "Cafe Nero - London: Moorgate"))
-#pprint(api_login.ipam.get_vlans(name="TEST-VLAN2"))
+		vlans = session.send_command(command)
+
+		output = self.textfsm_extractor('show_vlan.template', vlans)
+		return output
+
+	def textfsm_extractor(self, template_name, raw_text):
+		textfsm_data = list()
+		fsm_handler = None
+
+		with open("show_vlan.template") as f:
+			fsm_handler = textfsm.TextFSM(f)
+
+			for obj in fsm_handler.ParseText(raw_text):
+				entry = {}
+				for index, entry_value in enumerate(obj):
+					entry[fsm_handler.header[index].lower()] = entry_value
+				textfsm_data.append(entry)
+
+			return textfsm_data
+
+print(bcp_vlan_functions().save_vlans_to_netbox(api_login, "SITE A: VLAN Group"))
